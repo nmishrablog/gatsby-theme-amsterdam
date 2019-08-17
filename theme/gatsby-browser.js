@@ -3,8 +3,9 @@ import Layout from './src/components/Layout'
 
 export const wrapPageElement = ({ element, props }, pluginOptions) => {
   const { transitions = true } = pluginOptions
+  const { followCursor = false } = pluginOptions
   return (
-    <Layout {...props} transitions={transitions}>
+    <Layout {...props} transitions={transitions} cursor={followCursor}>
       {element}
     </Layout>
   )

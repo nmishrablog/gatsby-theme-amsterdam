@@ -6,7 +6,7 @@ import GlobalStyle from '../styles/global'
 import Menu from './Menu'
 import Footer from './Footer'
 import Transition from './Transition'
-import CustomCursor from './CustomCursor'
+import FollowCursor from './FollowCursor'
 
 const Skip = styled.a`
   padding: 0 1rem;
@@ -45,28 +45,30 @@ const Layout = props => {
         Skip to content
       </Skip>
       <ThemeProvider theme={theme}>
-        {props.transitions ? (
-          <>
-            <Menu />
-            <Transition {...props}>
-              <div className="siteRoot">
+        <>
+          {props.cursor && <FollowCursor />}
+          {props.transitions ? (
+            <>
+              <Menu />
+              <Transition {...props}>
+                <div className="siteRoot">
+                  {props.children}
+                  <Footer />
+                </div>
+              </Transition>
+            </>
+          ) : (
+            <>
+              <Menu />
+              <main className="siteRoot" id="main">
                 {props.children}
                 <Footer />
-              </div>
-            </Transition>
-          </>
-        ) : (
-          <>
-            <Menu />
-            <main className="siteRoot" id="main">
-              {props.children}
-              <Footer />
-            </main>
-          </>
-        )}
+              </main>
+            </>
+          )}
+        </>
       </ThemeProvider>
       <GlobalStyle />
-      <CustomCursor />
     </>
   )
 }

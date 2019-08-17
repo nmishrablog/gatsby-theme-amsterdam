@@ -9,14 +9,6 @@ import styled from 'styled-components'
   https://formidable.com/blog/2019/input-smoothing/
 */
 
-const Cursor = styled.div`
-  position: absolute;
-  border: 2px solid black;
-  border-radius: 99999px;
-  height: 50px;
-  width: 50px;
-`
-
 const Wrapper = styled.div`
   position: fixed;
   top: 0;
@@ -24,6 +16,20 @@ const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: 9999999;
+  pointer-events: none;
+  @media (hover: none) {
+    display: none !important;
+  }
+`
+
+const Cursor = styled.div`
+  position: absolute;
+  background-blend-mode: multiply;
+  border: 2px solid ${props => props.theme.colors.base};
+  border-radius: 99999px;
+  height: 50px;
+  width: 50px;
+  opacity: 0.25;
 `
 
 /**
@@ -121,7 +127,7 @@ const smooth = (init, { roundness = 0.1 } = {}) => {
   return { start }
 }
 
-const CustomCursor = () => {
+const FollowCursor = () => {
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
@@ -141,8 +147,19 @@ const CustomCursor = () => {
 
   useEffect(() => () => smoothedMouse.stop(), [])
 
+  useEffect(() => {
+    window.addEventListener('mousemove', updateCursorPosition, {
+      passive: true,
+    })
+    return () => {
+      window.removeEventListener('mousemove', updateCursorPosition, {
+        passive: true,
+      })
+    }
+  }, [])
+
   return (
-    <Wrapper onMouseMove={updateCursorPosition}>
+    <Wrapper>
       <Cursor
         style={{
           transform: `translate(calc( calc(${x}, 0) * 1px - 50%),calc(calc(${y}, 0) * 1px - 50%))`,
@@ -152,4 +169,4 @@ const CustomCursor = () => {
   )
 }
 
-export default CustomCursor
+export default FollowCursor
