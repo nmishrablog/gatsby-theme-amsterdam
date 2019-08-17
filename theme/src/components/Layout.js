@@ -6,6 +6,7 @@ import GlobalStyle from '../styles/global'
 import Menu from './Menu'
 import Footer from './Footer'
 import Transition from './Transition'
+import CustomCursor from './CustomCursor'
 
 const Skip = styled.a`
   padding: 0 1rem;
@@ -61,11 +62,11 @@ const Layout = props => {
               {props.children}
               <Footer />
             </main>
-            <Footer />
           </>
         )}
       </ThemeProvider>
       <GlobalStyle />
+      <CustomCursor />
     </>
   )
 }
