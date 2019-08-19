@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { useCursorState } from '../state/cursor'
 
 /*
   This is pretty much a direct port of the simple example
@@ -17,19 +18,26 @@ const Wrapper = styled.div`
   left: 0;
   z-index: 9999999;
   pointer-events: none;
+  opacity: 0.9999;
   @media (hover: none) {
     display: none !important;
   }
 `
 
 const Cursor = styled.div`
+  transition: 0.5s opacity;
   position: absolute;
-  background-blend-mode: multiply;
-  border: 2px solid ${props => props.theme.colors.base};
+  border: 1px solid ${props => props.theme.colors.text};
   border-radius: 99999px;
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   opacity: 0.25;
+  z-index: 9999999;
+  ${props =>
+    props.hover &&
+    css`
+      opacity: 0;
+    `};
 `
 
 /**
@@ -127,7 +135,7 @@ const smooth = (init, { roundness = 0.1 } = {}) => {
   return { start }
 }
 
-const FollowCursor = () => {
+const CustomCursor = () => {
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
@@ -158,9 +166,12 @@ const FollowCursor = () => {
     }
   }, [])
 
+  const { state } = useCursorState()
+
   return (
     <Wrapper>
       <Cursor
+        hover={state.hover}
         style={{
           transform: `translate(calc( calc(${x}, 0) * 1px - 50%),calc(calc(${y}, 0) * 1px - 50%))`,
         }}
@@ -169,4 +180,4 @@ const FollowCursor = () => {
   )
 }
 
-export default FollowCursor
+export default CustomCursor

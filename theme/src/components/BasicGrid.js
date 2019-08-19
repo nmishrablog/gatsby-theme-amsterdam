@@ -3,6 +3,7 @@ import { Link } from 'gatsby'
 import styled from 'styled-components'
 import Img from 'gatsby-image'
 import Placeholder from './Placeholder'
+import { useCursorDispatch } from '../state/cursor'
 const _ = require(`lodash`)
 
 const List = styled.ul`
@@ -101,11 +102,16 @@ const Tag = styled.span`
 `
 
 const BasicGrid = props => {
+  const { hover, normal } = useCursorDispatch()
   return (
     <List>
       {props.posts.map(({ node: post }) => (
         <Item key={post.frontmatter.title}>
-          <Link to={props.context.basePath + post.fields.slug}>
+          <Link
+            to={props.context.basePath + post.fields.slug}
+            onMouseOver={hover}
+            onMouseOut={normal}
+          >
             {post.frontmatter.cover && (
               <Cover
                 sizes={{
@@ -121,7 +127,11 @@ const BasicGrid = props => {
               ''
             )}
           </Link>
-          <Link to={props.context.basePath + post.fields.slug}>
+          <Link
+            to={props.context.basePath + post.fields.slug}
+            onMouseOver={hover}
+            onMouseOut={normal}
+          >
             <Title>{post.frontmatter.title}</Title>
             <Excerpt>{post.excerpt}</Excerpt>
           </Link>
@@ -134,6 +144,8 @@ const BasicGrid = props => {
                   <Tag key={tag}>
                     <Link
                       to={`${props.context.basePath}/tag/${_.kebabCase(tag)}/`}
+                      onMouseOver={hover}
+                      onMouseOut={normal}
                     >
                       {tag}
                     </Link>

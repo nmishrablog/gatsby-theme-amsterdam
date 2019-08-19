@@ -42,7 +42,7 @@ module.exports = {
       options: {
         postsPerPage: 6,
         grid: 'basic',
-        followCursor: true,
+        customCursor: true,
       },
     },
     {

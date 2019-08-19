@@ -5,7 +5,7 @@ import PostList from '../components/PostList'
 import SEO from '../components/SEO'
 import Pagination from '../components/Pagination'
 import Container from '../components/Container'
-import { useSiteMetadata } from '../hooks/use-site-metadata'
+import { useSiteMetadata } from '../hooks/useSiteMetadata'
 
 const PostsPage = ({ data, pageContext }) => {
   const { intro } = useSiteMetadata()

@@ -1,13 +1,16 @@
 import React from 'react'
 import Layout from './src/components/Layout'
+import { CursorProvider } from './src/state/cursor'
 
 export const wrapPageElement = ({ element, props }, pluginOptions) => {
   const { transitions = true } = pluginOptions
-  const { followCursor = false } = pluginOptions
+  const { customCursor = false } = pluginOptions
   return (
-    <Layout {...props} transitions={transitions} cursor={followCursor}>
-      {element}
-    </Layout>
+    <CursorProvider>
+      <Layout {...props} transitions={transitions} cursor={customCursor}>
+        {element}
+      </Layout>
+    </CursorProvider>
   )
 }
 
@@ -27,4 +30,21 @@ export const shouldUpdateScroll = (
     )
   }
   return false
+}
+
+export const onRouteUpdate = () => {
+  const links = document.getElementsByTagName('a')
+  const buttons = document.getElementsByTagName('button')
+  const hoverItems = [...links, ...buttons]
+
+  const hoverState = () => {
+    console.log('hover')
+  }
+  const defaultState = () => {
+    console.log('normal')
+  }
+  for (let i = 0; i < hoverItems.length; i++) {
+    hoverItems[i].onmouseover = hoverState
+    hoverItems[i].onmouseout = defaultState
+  }
 }
