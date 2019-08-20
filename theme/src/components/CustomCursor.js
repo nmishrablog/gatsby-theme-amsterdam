@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import styled, { css } from 'styled-components'
-import { useCursorState } from '../state/cursor'
+import styled from 'styled-components'
+import { motion, useViewportScroll } from 'framer-motion'
 
 /*
-  This is pretty much a direct port of the simple example
-  created by Max Yinger from the article he wrote called
-  Input Smoother: An Intro To Reactive Animations.
-
-  https://formidable.com/blog/2019/input-smoothing/
+  Heavily inspired by the following:
+  - https://formidable.com/blog/2019/input-smoothing/
+  - https://alfacharlie.co/
 */
 
 const Wrapper = styled.div`
@@ -18,26 +16,28 @@ const Wrapper = styled.div`
   left: 0;
   z-index: 9999999;
   pointer-events: none;
-  opacity: 0.9999;
   @media (hover: none) {
     display: none !important;
   }
+  &.hover {
+    svg {
+      opacity: 0;
+    }
+  }
 `
 
-const Cursor = styled.div`
+const SVG = styled.svg`
   transition: 0.5s opacity;
   position: absolute;
-  border: 1px solid ${props => props.theme.colors.text};
-  border-radius: 99999px;
-  height: 45px;
-  width: 45px;
-  opacity: 0.25;
-  z-index: 9999999;
-  ${props =>
-    props.hover &&
-    css`
-      opacity: 0;
-    `};
+  height: 48px;
+  width: 48px;
+  overflow: hidden;
+  #progress {
+    stroke: ${props => props.theme.colors.highlight};
+  }
+  #outline {
+    stroke: ${props => props.theme.colors.border};
+  }
 `
 
 /**
@@ -136,6 +136,8 @@ const smooth = (init, { roundness = 0.1 } = {}) => {
 }
 
 const CustomCursor = () => {
+  const { scrollYProgress } = useViewportScroll()
+
   const [x, setX] = useState(0)
   const [y, setY] = useState(0)
 
@@ -153,8 +155,6 @@ const CustomCursor = () => {
     })
   }
 
-  useEffect(() => () => smoothedMouse.stop(), [])
-
   useEffect(() => {
     window.addEventListener('mousemove', updateCursorPosition, {
       passive: true,
@@ -166,16 +166,35 @@ const CustomCursor = () => {
     }
   }, [])
 
-  const { state } = useCursorState()
-
   return (
-    <Wrapper>
-      <Cursor
-        hover={state.hover}
+    <Wrapper id="cursor">
+      <SVG
         style={{
           transform: `translate(calc( calc(${x}, 0) * 1px - 50%),calc(calc(${y}, 0) * 1px - 50%))`,
         }}
-      />
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+        x="0px"
+        y="0px"
+        viewBox="0 0 36 36"
+        xmlSpace="preserve"
+      >
+        <path
+          id="outline"
+          fill="none"
+          d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+        <motion.path
+          fill="none"
+          id="progress"
+          style={{ pathLength: scrollYProgress }}
+          d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+      </SVG>
     </Wrapper>
   )
 }

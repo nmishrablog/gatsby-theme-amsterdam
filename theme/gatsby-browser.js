@@ -14,6 +14,31 @@ export const wrapPageElement = ({ element, props }, pluginOptions) => {
   )
 }
 
+// Detect hover to apply the hover state on the custom cursor
+export const onRouteUpdate = ({ location }, pluginOptions) => {
+  const { customCursor = false } = pluginOptions
+  if (customCursor === true) {
+    const links = document.getElementsByTagName('a')
+    const buttons = document.getElementsByTagName('button')
+    const inputs = document.getElementsByTagName('input')
+    const selects = document.getElementsByTagName('select')
+    const hoverItems = [...links, ...buttons, ...inputs, ...selects]
+    const HoverState = () => {
+      const body = document.getElementById('cursor')
+      body.classList.add('hover')
+    }
+    const DefaultState = () => {
+      const body = document.getElementById('cursor')
+      body.classList.remove('hover')
+    }
+    DefaultState()
+    for (let i = 0; i < hoverItems.length; i++) {
+      hoverItems[i].onmouseover = HoverState
+      hoverItems[i].onmouseout = DefaultState
+    }
+  }
+}
+
 export const shouldUpdateScroll = (
   { routerProps: { location }, getSavedScrollPosition },
   pluginOptions
@@ -30,21 +55,4 @@ export const shouldUpdateScroll = (
     )
   }
   return false
-}
-
-export const onRouteUpdate = () => {
-  const links = document.getElementsByTagName('a')
-  const buttons = document.getElementsByTagName('button')
-  const hoverItems = [...links, ...buttons]
-
-  const hoverState = () => {
-    console.log('hover')
-  }
-  const defaultState = () => {
-    console.log('normal')
-  }
-  for (let i = 0; i < hoverItems.length; i++) {
-    hoverItems[i].onmouseover = hoverState
-    hoverItems[i].onmouseout = defaultState
-  }
 }

@@ -3,7 +3,6 @@ import { Link } from 'gatsby'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { useSiteMetadata } from '../hooks/useSiteMetadata'
-import { useCursorDispatch } from '../state/cursor'
 
 const Header = styled.header`
   transition: max-height 0.5s cubic-bezier(0.52, 0.16, 0.24, 1), border 0.3s;
@@ -122,7 +121,6 @@ const Toggle = styled.button`
 
 const Menu = () => {
   const { menuLinks } = useSiteMetadata()
-  const { hover, normal } = useCursorDispatch()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -157,13 +155,7 @@ const Menu = () => {
   return (
     <Header open={isOpen}>
       <Nav>
-        <Toggle
-          open={isOpen}
-          onClick={toggle}
-          aria-label="Toggle Menu"
-          onMouseOver={hover}
-          onMouseOut={normal}
-        >
+        <Toggle open={isOpen} onClick={toggle} aria-label="Toggle Menu">
           <span />
           <span />
         </Toggle>
@@ -175,12 +167,7 @@ const Menu = () => {
               animate={isOpen ? 'open' : 'closed'}
               key={link.name}
             >
-              <Link
-                to={link.slug}
-                onClick={close}
-                onMouseOver={hover}
-                onMouseOut={normal}
-              >
+              <Link to={link.slug} onClick={close}>
                 {link.name}
               </Link>
             </Item>
