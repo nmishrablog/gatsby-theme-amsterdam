@@ -27,6 +27,7 @@ const Wrapper = styled.div`
 `
 
 const SVG = styled.svg`
+  opacity: 0;
   transition: 0.5s opacity;
   position: absolute;
   height: 48px;
@@ -135,7 +136,7 @@ const smooth = (init, { roundness = 0.1 } = {}) => {
   return { start }
 }
 
-const CustomCursor = () => {
+const ProgressIndicator = () => {
   const { scrollYProgress } = useViewportScroll()
 
   const [x, setX] = useState(0)
@@ -163,11 +164,12 @@ const CustomCursor = () => {
       window.removeEventListener('mousemove', updateCursorPosition, {
         passive: true,
       })
+      smoothedMouse.stop()
     }
   }, [])
 
   return (
-    <Wrapper id="cursor">
+    <Wrapper>
       <SVG
         style={{
           transform: `translate(calc( calc(${x}, 0) * 1px - 50%),calc(calc(${y}, 0) * 1px - 50%))`,
@@ -178,6 +180,7 @@ const CustomCursor = () => {
         y="0px"
         viewBox="0 0 36 36"
         xmlSpace="preserve"
+        id="cursor"
       >
         <path
           id="outline"
@@ -199,4 +202,4 @@ const CustomCursor = () => {
   )
 }
 
-export default CustomCursor
+export default ProgressIndicator

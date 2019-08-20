@@ -150,5 +150,13 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
+// Progress Indicator styles
+  .post #cursor {
+    opacity: 1;
+  }
+  .hidden #cursor {
+    opacity: 0;
+  }
+
 `
 export default GlobalStyle

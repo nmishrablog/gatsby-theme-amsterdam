@@ -1,5 +1,6 @@
 import React from 'react'
 import { graphql } from 'gatsby'
+import Helmet from 'react-helmet'
 import Container from '../components/Container'
 import Hero from '../components/Hero'
 import Content from '../components/Content'
@@ -20,6 +21,9 @@ const PostTemplate = ({ data, pageContext }) => {
 
   return (
     <>
+      <Helmet>
+        <body className="post" />
+      </Helmet>
       <SEO
         title={post.frontmatter.title}
         description={post.excerpt}
