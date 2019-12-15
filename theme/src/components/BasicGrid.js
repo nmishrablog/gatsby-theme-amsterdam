@@ -105,22 +105,7 @@ const BasicGrid = props => {
     <List>
       {props.posts.map(({ node: post }) => (
         <Item key={post.frontmatter.title}>
-          <Link to={props.context.basePath + post.fields.slug}>
-            {post.frontmatter.cover && (
-              <Cover
-                sizes={{
-                  ...post.frontmatter.cover.childImageSharp.fluid,
-                  aspectRatio: 5 / 3,
-                }}
-                alt={post.frontmatter.cover.childImageSharp.title}
-              />
-            )}
-            {post.frontmatter.cover === null ? (
-              <Placeholder aspectRatio={5 / 3} />
-            ) : (
-              ''
-            )}
-          </Link>
+          
           <Link to={props.context.basePath + post.fields.slug}>
             <Title>{post.frontmatter.title}</Title>
             <Excerpt>{post.excerpt}</Excerpt>
